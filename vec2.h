@@ -116,7 +116,7 @@ public:
     friend Vec2<T> operator * (Vec2<T> &left, U value)
     {
         Vec2<T> temp = left;
-        return temp.multiply(value);
+        return temp;.multiply(value);
     }
 
     template<typename U>
