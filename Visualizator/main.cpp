@@ -147,19 +147,21 @@ void renderTriangle(Point a, Point b, Point c)
 	for (int y = a.y; y <= c.y; y++)
 	{
 		bool secondHalf = (y >= b.y) ? true : false;
-		int segmentH = (secondHalf ? c.y - b.y : b.y - a.y) + 1;
-		double k1 = (y - a.y) / float(totalH);
-		double k2 = (secondHalf ? y - b.y : y - a.y) / float(segmentH);
+		int segmentH = (secondHalf ? c.y - b.y : b.y - a.y);
+		double k1 = (y - a.y) / double(totalH);
+		double k2 = (secondHalf ? y - b.y : y - a.y) / double(segmentH);
 		int left = a.x + (c.x - a.x) * k1, right = (secondHalf ? b.x : a.x) + (secondHalf ? c.x - b.x : b.x - a.x)*k2;
+		Color l = a.color * (1 - k1) + c.color*k1;
+		Color r = (secondHalf ? b.color : a.color) * (1 - k2) + (secondHalf ? c.color : b.color)*k2;
+		int dx = right - left;
 		for (int x = left; x <= right; x++)
+		{
+			double k = (x - left) / double(dx);
+			Color col = l * (1 - k) + r * k;
+			glColor3f(col.red / 255.0, col.green / 255.0, col.blue / 255.0);
 			glVertex2i(x, y);
+		}
 	}
-	a.color = Color(0, 255, 0);
-	b.color = Color(0, 255, 0);
-	c.color = Color(0, 255, 0);
-	renderLine(a, b);
-	renderLine(b, c);
-	renderLine(c, a);
 }
 
 void renderScene(void)
@@ -168,11 +170,14 @@ void renderScene(void)
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glBegin(GL_POINTS);
-	renderTriangle(Point(-100, -100, Color(255, 0, 0)), Point(100, -50, Color(255, 0, 0)), Point(0, 100, Color(255, 0, 0)));
+	renderTriangle(Point(-100, -100, Color(255, 0, 0)), Point(100, -50, Color(0, 255, 0)), Point(0, 100, Color(0, 0, 255)));
 	glEnd();
 	glBegin(GL_TRIANGLES);
+	glColor3f(1, 0, 0);
 	glVertex2i(-300, -300);
+	glColor3f(0, 1, 0);
 	glVertex2i(-100, -250);
+	glColor3f(0, 0, 1);
 	glVertex2i(-200, -100);
 	glEnd();
 
