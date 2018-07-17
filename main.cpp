@@ -8,7 +8,7 @@
 int main()
 {
     Vec3<> ector(2, 3, 5), vec(4, 5, 1);
-    std::cout<<2*ector+vec<<std::endl;
+    std::cout<<2*ector+vec<<ector<<vec<<std::endl;
 
     return 0;
 }

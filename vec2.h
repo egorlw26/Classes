@@ -30,12 +30,12 @@ public:
         return *this;
     }
 
-    Vec2<T> add(const Vec2<T> &other)
+    Vec2<T> add(const Vec2<T> &other) const
     {
         return Vec2(x + other.x, y + other.y);
     }
 
-    Vec2<T> substract(const Vec2<T> &other)
+    Vec2<T> substract(const Vec2<T> &other) const
     {
         return Vec2(x - other.x, y - other.y);
     }
@@ -116,7 +116,7 @@ public:
     friend Vec2<T> operator * (Vec2<T> &left, U value)
     {
         Vec2<T> temp = left;
-        return temp;.multiply(value);
+        return temp.multiply(value);
     }
 
     template<typename U>
