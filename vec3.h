@@ -32,12 +32,12 @@ public:
 
     Vec3<T> add(const Vec3<T> &other) const
     {
-        return Vec3(x+other.x, y+other.y, z+other.z);
+        return Vec3<T>(x+other.x, y+other.y, z+other.z);
     }
 
     Vec3<T> substract(const Vec3<T> &other) const
     {
-        return Vec3(x-other.x, y-other.y, z-other.z);
+        return Vec3<T>(x-other.x, y-other.y, z-other.z);
     }
 
     double dot(const Vec3<T> &other)
@@ -47,7 +47,7 @@ public:
 
     Vec3<T> cross(const Vec3<T> &other)
     {
-        return Vec3(y*other.z - z*other.y, z*other.x  - x*other.z, x*other.y - y*other.x);
+        return Vec3<T>(y*other.z - z*other.y, z*other.x  - x*other.z, x*other.y - y*other.x);
     }
 
     double magnitude()
