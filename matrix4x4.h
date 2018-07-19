@@ -30,29 +30,26 @@ public:
 
     Matrix4x4<T> identity()
     {
-        for(int i = 0; i<16; i++)
-        {
-            elements[i] = 0;
-            if(i == 0 || i==5 || i == 10 || i == 15)
-                elements[i] = 1;
-        }
+        for(int i =0; i<4; i++)
+            for(int j = 0; j<4; j++)
+                elements[i*4+j] = (i==j);
         return *this;
     }
 
     Matrix4x4<T> add(const Matrix4x4<T> &other) const
     {
-        T nMat[16];
+        Matrix4x4<T> nMat;
         for(int i = 0; i<16; i++)
-            nMat[i] = elements[i] + other.elements[i];
-        return Matrix4x4<T>(nMat);
+            nMat.elements[i] = elements[i] + other.elements[i];
+        return nMat;
     }
 
     Matrix4x4<T> substract(const Matrix4x4<T> &other) const
     {
-        T nMat[16];
+        Matrix4x4<T> nMat;
         for(int i = 0; i<16; i++)
-            nMat[i] = elements[i] - other.elements[i];
-        return Matrix4x4<T>(nMat);
+            nMat.elements[i] = elements[i] - other.elements[i];
+        return nMat;
     }
 
     template<typename U>
@@ -65,25 +62,23 @@ public:
 
     Matrix4x4<T> multiply(const Matrix4x4<T> &other)
     {
-        T nMat[16];
+        Matrix4x4<T> nMat;
 
         for(int k = 0; k<4; k++)
             for(int j = 0; j<4; j++)
             {
-                int el = 0;
                 for(int i=0; i<4; i++)
-                    el += elements[i+k*4] * other.elements[i*4+j];
-                nMat[j+k*4] = el;
+                    nMat.elements[j+k*4] += elements[i+k*4] * other.elements[i*4+j];
             }
-        return Matrix4x4<T>(nMat);
+        return nMat;
     }
 
-    Vec4<T> multiply(Vec4<T> &right)
+    Vec4<T> multiply(Vec4<T> right)
     {
         Vec4<T> vec(0, 0, 0, 0);
         for(int j = 0; j<4; j++)
             for(int i=0; i<4; i++)
-                vec[j] += elements[j*4+i]*right[i];
+                vec[j] += right[i]*elements[j*4+i];
         return vec;
     }
 
@@ -161,8 +156,8 @@ public:
     {
         for(int i =0; i<16; i++)
         {
-            os<<matrix.elements[i]<<' ';
-            if((i+1)%4==0) os<<std::endl;
+            os<<matrix.elements[i];
+            (i+1)%4==0 ? std::cout<<std::endl : std::cout<<' ';
         }
         return os;
     }

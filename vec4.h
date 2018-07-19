@@ -6,7 +6,16 @@ template<typename T = long double>
 class Vec4
 {
 public:
-    T x, y, z, w;
+    union
+    {
+        T a[4];
+        struct
+        {
+            T x, y, z, w;
+        };
+
+    };
+
     Vec4()
         : x(0), y(0), z(0), w(0)
     {}
@@ -17,22 +26,7 @@ public:
 
     T& operator[] (int n)
     {
-        switch (n) {
-        case 0:
-            return x;
-            break;
-        case 1:
-            return y;
-            break;
-        case 2:
-            return z;
-            break;
-        case 3:
-            return w;
-            break;
-        default:
-            break;
-        }
+        return a[n];
     }
 
     friend std::ostream& operator << (std::ostream& os, const Vec4<T> &vec)
