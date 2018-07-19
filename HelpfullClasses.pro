@@ -22,4 +22,5 @@ SOURCES += \
 HEADERS += \
     ivector.h \
     vec2.h \
-    vec3.h
+    vec3.h \
+    matrix4x4.h

@@ -4,11 +4,12 @@
 #include <algorithm>
 #include <vec2.h>
 #include <vec3.h>
+#include <matrix4x4.h>
 
 int main()
 {
-    Vec3<> ector(2, 3, 5), vec(4, 5, 1);
-    std::cout<<2*ector+vec<<ector<<vec<<std::endl;
-
+    int m[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    Matrix4x4<int> mat(m);
+    std::cout<<mat.transpose()<<std::endl;
     return 0;
 }
