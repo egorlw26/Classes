@@ -29,6 +29,15 @@ public:
         return a[n];
     }
 
+    template<typename U>
+    Vec4<T> multiply(U _x)
+    {
+        x*=_x;
+        y*=_x;
+        z*=_x;
+        return *this;
+    }
+
     friend std::ostream& operator << (std::ostream& os, const Vec4<T> &vec)
     {
         os<<'('<<vec.x<<','<<vec.y<<','<<vec.z<<','<<vec.w<<')';
