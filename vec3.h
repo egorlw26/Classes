@@ -1,6 +1,7 @@
 #ifndef VEC3_H
 #define VEC3_H
 #include <iostream>
+#include <vec4.h>
 
 template<typename T = long double>
 class Vec3
@@ -59,6 +60,16 @@ public:
     {
        this->multiply(1.0/this->magnitude());
        return *this;
+    }
+
+    Vec4<T> toVec4(T w)
+    {
+        Vec4<T> res;
+        res.x = x*w;
+        res.y = y*w;
+        res.z = z*w;
+        res.w = w;
+        return res;
     }
 
     Vec3<T> operator = (const Vec3<T> &right)

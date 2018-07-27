@@ -2,6 +2,7 @@
 #define MATRIX4X4_H
 #include <iostream>
 #include <cmath>
+#include <vec3.h>
 #include <vec4.h>
 #define PI ((double)std::acos(-1))
 
@@ -10,14 +11,7 @@ template<typename T = long double>
 class Matrix4x4
 {
 public:
-    union
-    {
-        T elements[16];
-        struct
-        {
-            T x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15;
-        };
-    };
+    T elements[16];
 
     Matrix4x4()
     {
@@ -30,10 +24,6 @@ public:
         for(int i = 0; i<16; i++)
             elements[i] = mas[i];
     }
-
-    Matrix4x4<T>(T x0, T x1, T x2, T x3, T x4, T x5, T x6, T x7, T x8, T x9, T x10, T x11, T x12, T x13, T x14, T x15)
-        : x0(x0), x1(x1), x2(x2), x3(x3), x4(x4), x5(x5), x6(x6), x7(x7), x8(x8), x9(x9), x10(x10), x11(x11), x12(x12), x13(x13), x14(x14), x15(x15)
-    {}
 
     Matrix4x4<T> negative()
     {
@@ -160,7 +150,7 @@ public:
     {
         Matrix4x4<T> res;
         Matrix4x4<double> temp = *this;
-        res.identity();
+        res = identity();
         for(int i =0; i<4; i++)
         {
             if(temp.elements[i*4+i]==0)
@@ -200,63 +190,44 @@ public:
         return res;
     }
 
-    static Matrix4x4<T> translation(T x, T y, T z)
+    static Matrix4x4<T> translation(Vec4<T> vector)
     {
         Matrix4x4<T> res;
-        res.identity();
-        res.elements[3] = x;
-        res.elements[7] = y;
-        res.elements[11] = z;
+        res = identity();
+        res.elements[3] = vector.x;
+        res.elements[7] = vector.y;
+        res.elements[11] = vector.z;
         return res;
     }
 
-    static Matrix4x4<T> scaling(T x, T y, T z)
+    static Matrix4x4<T> scaling(Vec4<T> vector)
     {
         Matrix4x4<T> res;
-        res.identity();
-        res.elements[0] = x;
-        res.elements[5] = y;
-        res.elements[10] = z;
+        res = identity();
+        res.elements[0] = vector.x;
+        res.elements[5] = vector.y;
+        res.elements[10] = vector.z;
         return res;
     }
 
     static Matrix4x4<T> rotate(double angle, Vec4<T> vector)
     {
         double cos =std::cos((double)(angle*(PI/180.0))), sin = std::tan((double)(angle*(PI/180.0)));
-        Matrix4x4<T> res (cos + vector.x*vector.x*(1 - cos), vector.x*vector.y*(1-cos) - vector.z*sin, vector.x*vector.z*(1-cos)  + vector.y*sin, 0,
+        T mas[] =  {cos + vector.x*vector.x*(1 - cos), vector.x*vector.y*(1-cos) - vector.z*sin, vector.x*vector.z*(1-cos)  + vector.y*sin, 0,
                             vector.y*vector.x*(1-cos) + vector.z*sin, cos + vector.y*vector.y*(1-cos), vector.y*vector.z*(1-cos) - vector.x*sin, 0,
                             vector.z*vector.x*(1-cos) - vector.y*sin, vector.z*vector.y*(1-cos) + vector.x*sin, cos + vector.z*vector.z*(1-cos), 0,
-                            0, 0, 0, 1);
+                            0, 0, 0, 1};
+        Matrix4x4<T> res(mas);
         return res;
     }
 
-    static Matrix4x4<T> rotateXY(double angle)
+    static Matrix4x4<T> perspective(double angle, double aspect, double n, double f)
     {
-        double cos = std::cos((double)(angle*(PI/180.0))), sin = std::tan((double)(angle*(PI/180.0)));
-        Matrix4x4<T> res (cos, -sin, 0, 0,
-                             sin, cos, 0, 0,
-                             0, 0, 1, 0,
-                             0, 0 ,0, 1);
-        return res;
-    }
-
-    static Matrix4x4<T> rotateXZ(double angle)
-    {
-       double cos = std::cos((double)(angle*(PI/180.0))), sin = std::tan((double)(angle*(PI/180.0)));
-       Matrix4x4<T> res (cos, 0, -sin, 0,
-                             0, 1, 0, 0,
-                             sin, 0, cos, 0,
-                             0, 0 ,0, 1);
-       return res;
-    }
-
-    static Matrix4x4<T> rotateZY(double angle)
-    {
-        double cos = std::cos((double)(angle*(PI/180.0))), sin = std::tan((double)(angle*(PI/180.0)));
-        Matrix4x4<T> res (1, 0, 0, 0,
-                             0, cos, -sin, 0,
-                             0, sin, cos, 0,
-                             0, 0, 0, 1);
+        T mas[] = {std::ctg(angle/2*PI/180)/aspect, 0, 0, 0,
+                   0, std::ctg(angle/2*PI/180), 0, 0,
+                  0, 0, (f+n)/(f-n), 1,
+                  0, 0, -2*f*n/(f-n), 0};
+        Matrix4x4<T> res(mas);
         return res;
     }
 

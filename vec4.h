@@ -1,6 +1,7 @@
 #ifndef VEC4_H
 #define VEC4_H
 #include <iostream>
+#include <vec3.h>
 
 template<typename T = long double>
 class Vec4
@@ -36,6 +37,15 @@ public:
         y*=_x;
         z*=_x;
         return *this;
+    }
+
+    Vec3<T> toVec3 ()
+    {
+        Vec3<T> res;
+        res.x = x/w;
+        res.y = y/w;
+        res.z = z/w;
+        return res;
     }
 
     friend std::ostream& operator << (std::ostream& os, const Vec4<T> &vec)
