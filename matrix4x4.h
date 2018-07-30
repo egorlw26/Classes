@@ -231,6 +231,28 @@ public:
         return res;
     }
 
+    static Matrix4x4<T> perspective(double left, double right, double top, double bottom, double near, double far)
+    {
+        double a = far-near, b = right-left, c=top - bottom;
+        T mas[] = { 2*near/b, 0, (right+left)/b, 0,
+                  0, 2*near/c, (top+bottom)/c, 0,
+                  0, 0, -(far + near)/a, -2*far*near/a,
+                  0, 0, -1, 0};
+        Matrix4x4<T> res(mas);
+        return res;
+    }
+
+    static Matrix4x4<T> orthographic(double left, double right, double top, double bottom, double near, double far)
+    {
+        double a = far-near, b = right-left, c=top - bottom;
+        T mas[] = {2/b, 0, 0, -(right+left)/b,
+                  0, 2/c, 0, -(top+bottom)/c,
+                  0, 0, -2/a, -(far+near)/a,
+                  0, 0, 0, 1};
+        Matrix4x4<T> res(mas);
+        return res;
+    }
+
     Matrix4x4<T> operator = (const Matrix4x4<T> &right)
     {
         for(int i = 0; i<16; i++)
