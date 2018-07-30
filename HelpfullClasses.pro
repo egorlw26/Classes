@@ -24,4 +24,5 @@ HEADERS += \
     vec2.h \
     vec3.h \
     matrix4x4.h \
-    vec4.h
+    vec4.h \
+    quaternion.h
