@@ -1,22 +1,39 @@
 #pragma once
-
-#include <GL/freeglut.h>
-#include <functional>
+#include <vector>
+#include "SDL2/SDL.h"
+#include "../Renderable.h"
+#include "../Math/Math.h"
+#include "../Light.h"
 
 class Window
 {
 public:
-	Window(int *argc, char **argv,int xPos,int yPos, int width, int height, const char *title);
-	void clear();
-	void render(void(*func)());
-	void pollEvents();	
+	Window(const char *title, int widtt, int height);
+	~Window();
+
+	void pollEvents();
+	void clear(unsigned char r, unsigned char g, unsigned char b, unsigned char a) const;
+	void clear() const;
+	void render();
+	void rayTracing();
+
+	inline void addObject(Renderable *object) { m_objects.push_back(object); };
+	inline void addLight(Light *light) { m_lights.push_back(light); };
+
+	inline SDL_Renderer* getRenderer() const { return m_renderer; };
+	inline SDL_Window* getWindow() const { return m_window; };
+	inline bool isClosed() const { return m_closed; };
 
 private:
-	int m_xPos;
-	int m_yPos;
+	bool init();
+
+	bool m_closed;
+	const char *m_title;
 	int m_width;
 	int m_height;
-	char *m_title;
+	SDL_Window *m_window;
+	SDL_Renderer *m_renderer;
 
-	void (*m_render)();
+	std::vector<Renderable *> m_objects;
+	std::vector<Light *> m_lights;
 };

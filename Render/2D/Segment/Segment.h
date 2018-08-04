@@ -1,22 +1,25 @@
 #pragma once
 #include <vector>
 
-#include "Point.h"
+#include "../../../Math/Math.h"
+#include "../../../Renderable.h"
 
-class Segment
+class Segment : public Renderable
 {
 public:
-	Segment(const Point &a, const Point &b);
+	Segment(const Vec3<float> &a, const Vec3<float> &b);
 
 	double dist() const;
 
-	void calculateLocus();
-	inline std::vector<Point> getLocus() const { return m_locus; };
+	inline std::vector<Vec3<float>> getLocus() const { return m_locus; };
 
 private:
-	Point A;
-	Point B;
+	void createLocus() override;
+	//void createVolumeBox() override;
 
-	std::vector<Point> m_locus;
+	Vec3<float> A;
+	Vec3<float> B;
+
+	std::vector<Vec3<float>> m_locus;
 
 };
