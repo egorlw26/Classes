@@ -40,9 +40,9 @@ public:
         return Vec2(x - other.x, y - other.y);
     }
 
-    double dot(const Vec2<T> &other)
+    static Vec2<T> dot(const Vec2<T> &left, const Vec2<T> &right)
     {
-        return (x*other.x + y*other.y);
+        return (left.x*right.x + left.y*right.y);
     }
 
     double magnitude()
