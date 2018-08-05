@@ -7,5 +7,5 @@ class Renderable
 public:
 	virtual void createVolumeBox() = 0;
 	virtual void createLocus() = 0;
-	virtual bool intersectWithRay(const Ray &ray) = 0;
+	virtual bool intersectWithRay(const Ray &ray,Vec3<float> &intersection) = 0;
 };

@@ -1,7 +1,7 @@
 #include "Cube.h"
 
 Cube::Cube(const Vec3<float> &center, float edge)
-	:m_center(center), m_edgeLength(edge),m_color(Color::Yellow)
+	:m_center(center), m_edgeLength(edge), m_color(Color::Yellow)
 {
 	float halfEdge = m_edgeLength / 2;
 	m_minX = m_center.x - halfEdge;
@@ -12,19 +12,19 @@ Cube::Cube(const Vec3<float> &center, float edge)
 	m_maxZ = m_center.z + halfEdge;
 }
 
-bool Cube::intersectWithRay(const Ray &ray)
+bool Cube::intersectWithRay(const Ray &ray, Vec3<float> &intersection)
 {
-	Vec3<float> rayStart = ray.getStart();
+	Vec3<float> rayStart = ray.getOrigin();
 	Vec3<float> rayDirection = ray.getDirection();
 
 	float tmin = (m_minX - rayStart.x) / rayDirection.x;
 	float tmax = (m_maxX - rayStart.x) / rayDirection.x;
-	if (tmax < tmin) 
+	if (tmax < tmin)
 		std::swap(tmin, tmax);
 
 	float tymin = (m_minY - rayStart.y) / rayDirection.y;
 	float tymax = (m_maxY - rayStart.y) / rayDirection.y;
-	if (tymax < tymin) 
+	if (tymax < tymin)
 		std::swap(tymin, tymax);
 
 	if (tmin > tymax || tymin > tmax)

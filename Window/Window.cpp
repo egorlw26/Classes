@@ -75,7 +75,8 @@ void Window::render()
 
 void Window::rayTracing()
 {
-	Vec3<float> eyePosition(m_width / 2, m_height / 2, 1);
+	Vec3<float> eyePosition(m_width / 2, m_height / 2, 10.1);
+	Vec3<float> intersection;
 	for (int i = 0; i < m_width; ++i)
 	{
 		for (int j = 0; j < m_height; ++j)
@@ -83,9 +84,10 @@ void Window::rayTracing()
 			Ray ray(eyePosition, Vec3<float>(i, j, 0) - eyePosition);
 			for (Renderable *obj : m_objects)
 			{
-				if (obj->intersectWithRay(ray))
+				if (obj->intersectWithRay(ray, intersection))
 				{
-					SDL_SetRenderDrawColor(m_renderer, 255, 255, 0, 255);
+					float intensity = eyePosition.distance(intersection)/10;
+					SDL_SetRenderDrawColor(m_renderer, std::fmin(255 * intensity, 255.0), std::fmin(255 * intensity, 255.0), 0, 255);
 					SDL_RenderDrawPoint(m_renderer, i, j);
 				}
 				else

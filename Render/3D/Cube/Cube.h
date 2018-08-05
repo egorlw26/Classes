@@ -9,7 +9,7 @@ class Cube : public Renderable
 {
 public:
 	Cube(const Vec3<float> &center, float edge);
-	bool intersectWithRay(const Ray &ray) override;
+	bool intersectWithRay(const Ray &ray, Vec3<float> &intersection) override;
 
 private:
 	void createVolumeBox() override;
