@@ -43,9 +43,9 @@ public:
 		return res;
 	}
 
-	double dot(const Vec3<T> &other)
+	static Vec3<T> dot (const Vec3<T> &left, const Vec3<T> &right)
 	{
-		return (x*other.x + y * other.y + z * other.z);
+		return (left.x*right.x + left.y*right.y + left.z * right.z);
 	}
 
 	Vec3<T> cross(const Vec3<T> &other)
