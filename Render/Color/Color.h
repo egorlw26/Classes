@@ -1,14 +1,16 @@
 #pragma once
+#include <algorithm>
 
 struct Color
 {
 public:
-	Color(float r, float g, float b);
+	Color(unsigned char r, unsigned char g, unsigned char b);
 
-private:
-	float red;
-	float green;
-	float blue;
+	Color operator *(float value);
+	
+	unsigned char red;
+	unsigned char green;
+	unsigned char blue;
 
 public:
 	static const Color Red;

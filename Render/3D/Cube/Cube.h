@@ -11,6 +11,8 @@ public:
 	Cube(const Vec3<float> &center, float edge);
 	bool intersectWithRay(const Ray &ray, Vec3<float> &intersection) override;
 
+	inline Color getColor() const override { return m_color; };
+
 private:
 	void createVolumeBox() override;
 	void createLocus() override;

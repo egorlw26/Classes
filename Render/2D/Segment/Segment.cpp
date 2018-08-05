@@ -23,5 +23,5 @@ void Segment::createVolumeBox()
 
 bool Segment::intersectWithRay(const Ray &ray, Vec3<float> &intersection)
 {
-
+	return true;
 }

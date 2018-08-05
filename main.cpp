@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 	Window *win = new Window("Test", 800, 600);
 	Light *light = new Light(Vec3<float>(2, 2, 2));
 	Cube *box = new Cube(Vec3<float>(400, 300, 0), 10);
-	Sphere *sphere = new Sphere(Vec3<float>(400, 300, 0), 10);
+	Sphere *sphere = new Sphere(Vec3<float>(400, 300, 0), 10, Color::Red);
 
 	win->addObject(sphere);
 	win->addLight(light);

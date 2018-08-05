@@ -86,8 +86,12 @@ void Window::rayTracing()
 			{
 				if (obj->intersectWithRay(ray, intersection))
 				{
-					float intensity = eyePosition.distance(intersection)/10;
-					SDL_SetRenderDrawColor(m_renderer, std::fmin(255 * intensity, 255.0), std::fmin(255 * intensity, 255.0), 0, 255);
+					Color resColor = obj->getColor(); //* (eyePosition.distance(intersection) / 10);
+					for (Light *light : m_lights)
+					{
+
+					}
+					SDL_SetRenderDrawColor(m_renderer, resColor.red, resColor.green, resColor.blue, 255);
 					SDL_RenderDrawPoint(m_renderer, i, j);
 				}
 			}
