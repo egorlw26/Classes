@@ -12,9 +12,9 @@ bool Sphere::intersectWithRay(const Ray &ray, Vec3<float> &intersection)
 	Vec3<float> direction = ray.getDirection();
 	Vec3<float> toCenter = m_center - origin;
 
-	float a = direction.dot(direction);
-	float b = 2 * direction.dot(toCenter);
-	float c = toCenter.dot(toCenter) - m_radius * m_radius;
+	float a = Vec3<float>::dot(direction,direction);
+	float b = 2 * Vec3<float>::dot(direction,toCenter);
+	float c = Vec3<float>::dot(toCenter,toCenter) - m_radius * m_radius;
 
 	float disc = b * b - 4 * a*c;
 	if (disc < 0) return false;

@@ -90,9 +90,6 @@ void Window::rayTracing()
 					SDL_SetRenderDrawColor(m_renderer, std::fmin(255 * intensity, 255.0), std::fmin(255 * intensity, 255.0), 0, 255);
 					SDL_RenderDrawPoint(m_renderer, i, j);
 				}
-				else
-				{
-				}
 			}
 		}
 	}

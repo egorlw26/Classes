@@ -43,7 +43,7 @@ public:
 		return res;
 	}
 
-	static Vec3<T> dot (const Vec3<T> &left, const Vec3<T> &right)
+	static float dot(const Vec3<T> &left, const Vec3<T> &right)
 	{
 		return (left.x*right.x + left.y*right.y + left.z * right.z);
 	}
@@ -51,6 +51,12 @@ public:
 	Vec3<T> cross(const Vec3<T> &other)
 	{
 		return Vec3<T>(y*other.z - z * other.y, z*other.x - x * other.z, x*other.y - y * other.x);
+	}
+
+	static Vec3<T>& cross(const Vec3<T> &left, const Vec3<T> &right)
+	{
+		Vec3<T> res(right.y*left.z - right.z * left.y, right.z*oleft.x - right.x * left.z, right.x*left.y - right.y * left.x);
+		return res;
 	}
 
 	double magnitude()

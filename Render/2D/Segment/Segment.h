@@ -11,15 +11,13 @@ public:
 
 	double dist() const;
 
-	inline std::vector<Vec3<float>> getLocus() const { return m_locus; };
+	bool intersectWithRay(const Ray &ray, Vec3<float> &intersection) override;
 
 private:
 	void createLocus() override;
-	//void createVolumeBox() override;
+	void createVolumeBox() override;
 
 	Vec3<float> A;
 	Vec3<float> B;
-
-	std::vector<Vec3<float>> m_locus;
 
 };
