@@ -75,11 +75,13 @@ void Window::render()
 
 void Window::rayTracing()
 {
+	SDL_SetRenderDrawColor(m_renderer, 255, 0, 0, 255);
+	SDL_RenderDrawLine(m_renderer, 10, 0, 110, 100);
 	Vec3<float> eyePosition(m_width / 2, m_height / 2, 10.1);
 	Vec3<float> intersection;
-	for (int i = 0; i < m_width; ++i)
+	for (int j = 0; j < m_height; ++j)
 	{
-		for (int j = 0; j < m_height; ++j)
+		for (int i = 0; i < m_width; ++i)
 		{
 			Ray ray(eyePosition, Vec3<float>(i, j, 0) - eyePosition);
 			for (Renderable *obj : m_objects)
@@ -87,10 +89,7 @@ void Window::rayTracing()
 				if (obj->intersectWithRay(ray, intersection))
 				{
 					Color resColor = obj->getColor(); //* (eyePosition.distance(intersection) / 10);
-					for (Light *light : m_lights)
-					{
 
-					}
 					SDL_SetRenderDrawColor(m_renderer, resColor.red, resColor.green, resColor.blue, 255);
 					SDL_RenderDrawPoint(m_renderer, i, j);
 				}

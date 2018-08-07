@@ -53,9 +53,9 @@ public:
 		return Vec3<T>(y*other.z - z * other.y, z*other.x - x * other.z, x*other.y - y * other.x);
 	}
 
-	static Vec3<T>& cross(const Vec3<T> &left, const Vec3<T> &right)
+	static Vec3<T> cross(const Vec3<T> &left, const Vec3<T> &right)
 	{
-		Vec3<T> res(right.y*left.z - right.z * left.y, right.z*oleft.x - right.x * left.z, right.x*left.y - right.y * left.x);
+		Vec3<T> res(left.y * right.z - left.z * right.y, left.z * right.x - left.x * right.z, left.x * right.y - left.y * right.x);
 		return res;
 	}
 
@@ -123,18 +123,23 @@ public:
 		return (x == right.x && y == right.y && z == right.z);
 	}
 
+	bool operator != (const Vec3<T> &right)
+	{
+		return !(*this == right);
+	}
+
 	friend Vec3<T> operator -(Vec3<T> &vec)
 	{
 		vec.negative();
 		return vec;
 	}
 
-	friend Vec3<T>& operator + (const Vec3<T> &left, const Vec3<T> &right)
+	friend Vec3<T> operator + (const Vec3<T> &left, const Vec3<T> &right)
 	{
 		return left.add(right);
 	}
 
-	friend Vec3<T>& operator - (const Vec3<T> &left, const Vec3<T> &right)
+	friend Vec3<T> operator - (const Vec3<T> &left, const Vec3<T> &right)
 	{
 		return left.substract(right);
 	}
