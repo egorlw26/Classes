@@ -15,6 +15,8 @@ Tasks (check if done to see progress):
 3. colors mb materials
   3.1 specular colors
   3.2 defuse
+  3.3 mirror
+  3.4 glass
 4. primitives
   4.1 2D
     4.1.1 Segment +-
