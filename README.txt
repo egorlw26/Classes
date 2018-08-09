@@ -34,6 +34,7 @@ Tasks (check if done to see progress):
     4.2.4 Cylinder
     4.2.5 mb smth else
   4.3 bool operations
+  4.4 bounding box
 5. camera
 6. optimizing
 7. gpu
