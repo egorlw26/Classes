@@ -69,12 +69,10 @@ public:
 	{
 		Matrix4x4<T> nMat;
 
-		for (int k = 0; k < 4; k++)
+		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 4; j++)
-			{
-				for (int i = 0; i < 4; i++)
-					nMat.elements[j + k * 4] += elements[i + k * 4] * other.elements[i * 4 + j];
-			}
+				for (int k = 0; k < 4; k++)
+					nMat.elements[i * 4 + j] += elements[i * 4 + k] * other.elements[j + k * 4];
 		return nMat;
 	}
 
@@ -212,7 +210,7 @@ public:
 
 	static Matrix4x4<T> rotate(double angle, Vec4<T> vector)
 	{
-		double cos = std::cos((double)(angle*(PI / 180.0))), sin = std::tan((double)(angle*(PI / 180.0)));
+		double cos = std::cos((double)(angle*(PI / 180.0))), sin = std::sin((double)(angle*(PI / 180.0)));
 		T mas[] = { cos + vector.x*vector.x*(1 - cos), vector.x*vector.y*(1 - cos) - vector.z*sin, vector.x*vector.z*(1 - cos) + vector.y*sin, 0,
 							vector.y*vector.x*(1 - cos) + vector.z*sin, cos + vector.y*vector.y*(1 - cos), vector.y*vector.z*(1 - cos) - vector.x*sin, 0,
 							vector.z*vector.x*(1 - cos) - vector.y*sin, vector.z*vector.y*(1 - cos) + vector.x*sin, cos + vector.z*vector.z*(1 - cos), 0,
@@ -292,13 +290,13 @@ public:
 		return left.multiply(right);
 	}
 
-	friend Matrix4x4<T> operator * (Vec4<T> left, const Matrix4x4<T> &right)
+	friend Vec4<T> operator * (Vec4<T> left, const Matrix4x4<T> &right)
 	{
-		Matrix4x4<T> res;
-		for (int i = 0; i < 4; i++)
+		Vec4<T> res;
 			for (int j = 0; j < 4; j++)
-				res.elements[i * 4 + j] += left[i] * right.elements[j];
-		return res;
+				for (int k = 0; k < 4; k++)
+					res[j] += left[k] * right.elements[j + k * 4];
+			return res;
 	}
 
 	friend std::ostream& operator << (std::ostream& os, const Matrix4x4<T> &matrix)
