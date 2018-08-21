@@ -1,5 +1,9 @@
 #include "Window.h"
+#include "../Render/2D/Segment/Segment.h"
 #include <iostream>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 Window::Window(const char *title, int width, int height)
 	:m_closed(false),
@@ -7,7 +11,8 @@ Window::Window(const char *title, int width, int height)
 	m_width(width),
 	m_height(height),
 	m_window(nullptr),
-	m_renderer(nullptr)
+	m_renderer(nullptr),
+	m_camera(new Camera(Vec3<float>(width/2, height/2, 5), Vec3<float>(width / 2, height / 2, 0)))
 {
 	if (!init())
 	{
@@ -17,6 +22,8 @@ Window::Window(const char *title, int width, int height)
 
 Window::~Window()
 {
+	delete m_camera;
+
 	SDL_DestroyRenderer(m_renderer);
 	SDL_DestroyWindow(m_window);
 	SDL_Quit();
@@ -59,25 +66,44 @@ void Window::clear(unsigned char r, unsigned char g, unsigned char b, unsigned c
 	SDL_RenderClear(m_renderer);
 }
 
+void drawLine(int x1, int y1, int x2, int y2, const Color &color)
+{
+
+}
+
 void Window::render()
 {
-	for (int i = 0; i < m_width; ++i)
+	Matrix4x4<float> proj = Matrix4x4<float>::perspective(70, 1.0, 0.01, 1000.0);
+	Matrix4x4<float> view = m_camera->getView();
+	Matrix4x4<float> mvp = proj * view;
+	for (auto seg : m_objects)
 	{
-		for (int j = 0; j < m_height; ++j)
-		{
-			if (i != j) continue;
-			SDL_SetRenderDrawColor(m_renderer, i % 255, j % 255, (i + j) % 255, 255);
-			SDL_RenderDrawPoint(m_renderer, i, j);
-		}
+		Segment *s = dynamic_cast<Segment *>(seg);
+		Vec4<float> newA = (mvp * s->getA().toVec4(1));
+		Vec4<float> newB = (mvp * s->getB().toVec4(1));
+
+		Vec3<float> a3 = newA.toVec3();
+		Vec3<float> b3 = newB.toVec3();
+
+		Vec2<float> a2(a3.x / a3.z, a3.y / a3.z);
+		Vec2<float> b2(b3.x / b3.z, b3.y / b3.z);
+
+		Vec2<int> A(newA.x, newA.y), B(newB.x + 0.9, newB.y + 0.9);
+		if (A > B) std::swap(A, B);
+		//drawLine(A.x, A.y, B.x, B.y, s->getColor());
+		SDL_SetRenderDrawColor(m_renderer, 0, 255, 0, 255);
+		SDL_RenderDrawLine(m_renderer, A.x, A.y, B.x, B.y);
+		SDL_SetRenderDrawColor(m_renderer, 255, 255, 0, 255);
+		SDL_RenderDrawLine(m_renderer, 40, 30, 400, 300);
 	}
 	SDL_RenderPresent(m_renderer);
 }
 
 void Window::rayTracing()
 {
-	SDL_SetRenderDrawColor(m_renderer, 255, 0, 0, 255);
-	SDL_RenderDrawLine(m_renderer, 10, 0, 110, 100);
-	Vec3<float> eyePosition(m_width / 2, m_height / 2, 10.1);
+	//SDL_SetRenderDrawColor(m_renderer, 255, 0, 0, 255);
+	//SDL_RenderDrawLine(m_renderer, 10, 0, 410, 300);
+	Vec3<float> eyePosition(m_width / 2, m_height / 2, 10);
 	Vec3<float> intersection;
 	for (int j = 0; j < m_height; ++j)
 	{

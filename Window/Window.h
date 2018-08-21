@@ -4,6 +4,7 @@
 #include "../Renderable.h"
 #include "../Math/Math.h"
 #include "../Light.h"
+#include "Camera.h"
 
 class Window
 {
@@ -36,4 +37,6 @@ private:
 
 	std::vector<Renderable *> m_objects;
 	std::vector<Light *> m_lights;
+
+	Camera *m_camera;
 };

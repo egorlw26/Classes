@@ -69,21 +69,40 @@ public:
 	{
 		Matrix4x4<T> nMat;
 
-		for (int k = 0; k < 4; k++)
+		for (int i = 0; i < 4; ++i)
+		{
+			for (int j = 0; j < 4; ++j)
+			{
+				for (int k = 0; k < 4; ++k)
+				{
+					nMat.elements[i + j * 4] += elements[i + k * 4] * other.elements[k + j * 4];
+				}
+			}
+		}
+
+		/*for (int k = 0; k < 4; k++)
 			for (int j = 0; j < 4; j++)
 			{
 				for (int i = 0; i < 4; i++)
 					nMat.elements[j + k * 4] += elements[i + k * 4] * other.elements[i * 4 + j];
-			}
+			}*/
 		return nMat;
 	}
 
 	Vec4<T> multiply(Vec4<T> right) const
 	{
 		Vec4<T> vec(0, 0, 0, 0);
-		for (int j = 0; j < 4; j++)
+		for (int i = 0; i < 4; ++i)
+		{
+			for (int j = 0; j < 4; ++j)
+			{
+				vec[i] += elements[i + j * 4]*right[j];
+			}
+		}
+
+		/*for (int j = 0; j < 4; j++)
 			for (int i = 0; i < 4; i++)
-				vec[j] += right[i] * elements[j * 4 + i];
+				vec[j] += right[i] * elements[j * 4 + i];*/
 		return vec;
 	}
 
@@ -223,10 +242,12 @@ public:
 
 	static Matrix4x4<T> perspective(double angle, double aspect, double n, double f)
 	{
-		T mas[] = { std::ctg(angle / 2 * PI / 180) / aspect, 0, 0, 0,
-				   0, std::ctg(angle / 2 * PI / 180), 0, 0,
-				  0, 0, (f + n) / (f - n), 1,
-				  0, 0, -2 * f*n / (f - n), 0 };
+		angle /= 2;
+		T ctg = 1.0 / std::tan(angle * PI / 180);
+		T mas[] = { ctg / aspect,	0,		0,					0,
+					0,				ctg,	0,					0,
+					0,				0,		-(f + n) / (f - n),	-1,
+					0,				0,		-2 * f*n / (f - n),	0 };
 		Matrix4x4<T> res(mas);
 		return res;
 	}
@@ -245,10 +266,12 @@ public:
 	static Matrix4x4<T> orthographic(double left, double right, double top, double bottom, double n, double f)
 	{
 		double a = f - n, b = right - left, c = top - bottom;
-		T mas[] = { 2 / b, 0, 0, -(right + left) / b,
-				  0, 2 / c, 0, -(top + bottom) / c,
-				  0, 0, -2 / a, -(f + n) / a,
-				  0, 0, 0, 1 };
+
+		T mas[] = { 2 / b,	0,		0,			-(right + left) / b,
+					0,		2 / c,	0,			-(top + bottom) / c,
+					0,		0,		-2 / a,		-(f + n) / a,
+					0,		0,		0,			1 };
+
 		Matrix4x4<T> res(mas);
 		return res;
 	}

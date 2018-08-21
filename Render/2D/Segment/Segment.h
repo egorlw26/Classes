@@ -14,6 +14,8 @@ public:
 	bool intersectWithRay(const Ray &ray, Vec3<float> &intersection) override;
 
 	inline Color getColor() const override { return m_color; };
+	inline Vec3<float> getA() const { return A; };
+	inline Vec3<float> getB() const { return B; };
 
 private:
 	void createLocus() override;

@@ -28,11 +28,11 @@ bool Segment::intersectWithRay(const Ray &ray, Vec3<float> &intersection)
 	Vec3<float> oa = A - o;
 
 	//in different planes
-	float det = oa.x*(AB.y*d.z - AB.z*d.y) - AB.x*(oa.y*d.z - d.y*oa.z) + d.x*(oa.y*AB.z - oa.z*AB.y);
-	float det2 = Vec3<float>::dot(oa, Vec3<float>::cross(AB, d));
+	//float det = oa.x*(AB.y*d.z - AB.z*d.y) - AB.x*(oa.y*d.z - d.y*oa.z) + d.x*(oa.y*AB.z - oa.z*AB.y);
+	float det = Vec3<float>::dot(oa, Vec3<float>::cross(AB, d));
 
-	if (std::abs(det2 - 0) > 1e-1)
-		return false;
+	//if (det != 0)
+		//return false;
 
 	Vec3<float> n = Vec3<float>::cross(d, AB);
 	Vec3<float> pd = Vec3<float>::cross(n, d);
@@ -49,11 +49,16 @@ bool Segment::intersectWithRay(const Ray &ray, Vec3<float> &intersection)
 
 	float t = oapab / dpab;
 
-	Vec3<float> sub2 = (A + (AB * u)) - (o + (d * t));
-	sub2.x = std::abs(sub2.x);
-	sub2.y = std::abs(sub2.y);
-	sub2.z = std::abs(sub2.z);
-	Vec3<float> eps(1e-4, 1e-4, 1e-4);
-	if (u > 0 && u < 1 && sub2 < eps) return true;
-	else return false;
+	Vec3<float> sub = (A + (AB * u)) - (o + (d * t));
+	float eps = 0.1;
+	if (sub.x > eps || sub.x < -eps)
+		return false;
+	if (sub.y > eps || sub.y < -eps)
+		return false;
+	if (sub.z > eps || sub.z < -eps)
+		return false;
+	if (u < 0 || u > 1) 
+		return false;
+
+	return true;
 }
